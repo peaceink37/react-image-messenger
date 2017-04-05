@@ -12,55 +12,19 @@ class App extends Component {
 
     constructor(props){
         super(props);
-        this.setUploadedImage = this.setUploadedImage.bind(this);
-        this.uploadImage = this.uploadImage.bind(this);
-        this.state = {imageUploading:false, uploadImage:false, uploadedImage:{}}
+        
     }
-
   
-    setUploadedImage(img){
-
-        this.setState({uploadedImage:img});
-    }
-
-    uploadImage(){
-        
-        let currentState = this.state;
-        if(currentState.uploadImage === true){
-            currentState.uploadImage = false;
-        } else {
-            currentState.uploadImage = true;
-        }
-        this.setState(currentState => {
-                currentState.uploadImage;
-                return currentState;
-            }
-        );
-        console.log(" upload in app called "+this.state.uploadImage+"  current state upload "+currentState.uploadImage);
-    }
-
-    render() {
-        
-                
+    render() {    
+               
         return (
 
             <div className="container-fluid text-center">
-                <ImageUploadPage 
-                    uploadImage={this.state.uploadImage}
-                />
-
-                <MediaGalleryPage
-                    uploadImage={this.uploadImage}
-                    imageUploading={this.state.imageUploading}
-                    uploadedImage={this.state.uploadedImage}
-                />
-                
-            </div>
+                <ImageUploadPage />
+                <MediaGalleryPage />
+             </div>
         );
     }
 }
-App.propTypes = {
-  children: PropTypes.object.isRequired
-};
 
 export default App;

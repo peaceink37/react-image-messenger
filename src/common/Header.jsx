@@ -39,7 +39,7 @@ class Header extends Component {
                     <button
                         type="submit"
                         className="k-btn"
-                        onClick={this.props.uploadImage}
+                        onClick={this.props.uploadImageState}
                         ><i className="fa fa-upload" aria-hidden="true"></i>
                     </button>
                 </div>

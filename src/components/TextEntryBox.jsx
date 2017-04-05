@@ -5,15 +5,12 @@ class TextEntryBox extends Component {
 
     constructor(props){
         super(props);
-        this.handleTextFocus = this.handleTextFocus.bind(this);
         this.state = {shadowColor:{rChan:0, gChan:0, bChan:0}};
-        
     }
 
   
     componentWillUnmount(){
-        console.log(" an updated text component "+this.textArea.value);
-
+        
         let textValue = {
             value:this.textArea.value || " ",
             color:this.props.textColor[0],

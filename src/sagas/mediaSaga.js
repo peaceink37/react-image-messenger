@@ -7,7 +7,7 @@ import * as types from '../constants/ActionTypes';
 // Responsible for searching media library, making calls to the API
 // and instructing the redux-saga middle ware on the next line of action,
 // for success or failure operation.
-//const images = yield call(flickrImages, payload);
+
 export function* searchMediaSaga({ payload }) {
     try {
         //console.log(" search media saga "+payload);
@@ -29,7 +29,8 @@ export function* uploadImageSaga(payload){
         const uploadStatus = yield call(postKImage, payload.image);
 
         yield [
-            put({type: types.POST_IMAGE_SUCCESS, uploadStatus})
+            put({type: types.POST_IMAGE_SUCCESS, image: uploadStatus}),
+            put({type: types.ADD_POSTED_IMAGE_TO_ARRAY, image: uploadStatus})
         ];
     } catch (error) {
         yield put({type: types.POST_IMAGE_ERROR})

@@ -1,16 +1,24 @@
 // ./src/constants/ActionTypes.js
 
-// Keep your action types together in one file as
-// you would config values in the server.
+// Group Action Types by their function
 export const SELECTED_IMAGE = 'SELECTED_IMAGE';
 export const IMAGES_SUCCESS = 'IMAGES_SUCCESS';
 
-export const POST_IMAGE_REQUEST = 'POST_IMAGE_REQUEST';
-export const POST_IMAGE_SUCCESS = 'POST_IMAGE_SUCCESS';
-export const POST_IMAGE_ERROR = 'POST_IMAGE_ERROR';
-
 export const SEARCH_MEDIA_REQUEST = 'SEARCH_MEDIA_REQUEST';
-
 export const SEARCH_MEDIA_SUCCESS = 'SEARCH_MEDIA_SUCCESS';
 export const SEARCH_MEDIA_ERROR = 'SEARCH_MEDIA_ERROR';
 export const SET_FILTERED_IMAGE = 'SET_FILTERED_IMAGE';
+
+// Filters
+export const SET_IMAGE_COLOR_GRADIENT = 'SET_IMAGE_COLOR_GRADIENT';
+export const SET_TEXT_COLOR = 'SET_TEXT_COLOR';
+export const SET_IMAGE_CONTRAST = 'SET_IMAGE_CONTRAST';
+export const SET_IMAGE_BRIGHTNESS = 'SET_IMAGE_BRIGHTNESS';
+
+// Uploading
+export const POST_IMAGE_REQUEST = 'POST_IMAGE_REQUEST';
+export const POST_IMAGE_SUCCESS = 'POST_IMAGE_SUCCESS';
+export const ADD_POSTED_IMAGE_TO_ARRAY = 'ADD_POSTED_IMAGE_TO_ARRAY';
+export const POST_IMAGE_ERROR = 'POST_IMAGE_ERROR';
+export const UPLOADING = 'UPLOADING';
+export const UPLOAD_FINISHED = 'UPLOAD_FINISHED';

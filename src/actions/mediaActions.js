@@ -37,3 +37,23 @@ export const postImageAction = (imgObj) => {
     }
 }
 
+export const uploadBeginning = (uploadTrue) => {
+
+    return {
+        type: types.UPLOADING,
+        verdict: true
+    }
+};
+
+export const uploadFinished = (uploadTrue) => {
+
+    return {
+        type: types.UPLOAD_FINISHED,
+        verdict: false
+    }
+}
+
+
+
+
+

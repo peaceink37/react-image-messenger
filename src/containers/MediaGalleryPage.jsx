@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../common/Header';
 import ImageFilters from '../services/imageFilters';
-import { searchMediaAction, selectImageAction} from '../actions/mediaActions';
+import { searchMediaAction, selectImageAction, uploadBeginning} from '../actions/mediaActions';
 import PhotoPage from '../components/ImagePage';
 import FilterStore from '../services/filterStore';
 import FeaturesModal from '../components/FeaturesModal';
@@ -25,6 +25,7 @@ class MediaGalleryPage extends Component {
         this.setTextValues = this.setTextValues.bind(this);
         this.toggleFeaturesModal = this.toggleFeaturesModal.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.uploadImageState = this.uploadImageState.bind(this);
         this.imgFilterInstance = null;
         this.filterObj = {CONTRAST:{}, BRIGHTNESS:{}, GRADIENT:{}, TEXT:{}};
         this.state = {spinState:'spinner-active', currentQueryValue:'DetroitB', dataImage:false, 
@@ -32,6 +33,8 @@ class MediaGalleryPage extends Component {
         modalOpen:false, modalType:"FEATURES"};
         
     }
+
+    //this.state = {imageUploading:false, uploadImage:false, uploadedImage:{}}
 
 
     // Dispatches *searchMediaAction*  immediately after initial rendering.
@@ -69,6 +72,12 @@ class MediaGalleryPage extends Component {
                 return;    
             }
         } 
+    }
+
+    uploadImageState() {
+        // dispatch action that user has initiated an image upload
+        this.props.dispatch(uploadBeginning(true));
+
     }
 
     // Need to do a deep clone of given filter object before setting it 
@@ -163,7 +172,7 @@ class MediaGalleryPage extends Component {
                         searchFunction={this.handleSearch}
                         filtersAppear={this.filtersAppear}
                         toggleFeaturesModal={this.toggleFeaturesModal}
-                        uploadImage={this.props.uploadImage}
+                        uploadImageState={this.uploadImageState}
                         searchActivated={false}
                     />
                     {selectedImage ? <div>
@@ -171,7 +180,7 @@ class MediaGalleryPage extends Component {
                     <div>
                         <PhotoPage
                         applyImageFilter={this.applyImageFilter}
-                        bubbleMachine={true}
+                        bubbleMachine={false}
                         currentTheme={this.state.currentQueryValue}
                         dataImage={this.state.dataImage}
                         images={images}
@@ -200,10 +209,10 @@ MediaGalleryPage.propTypes={
 
  // Subscribe component to redux store and merge the state into 
  // component's props
-const mapStateToProps=({ images }) => ({
+const mapStateToProps=({ images , uploads}) => ({
     images: images[0],
     selectedImage: images.selectedImage,
-    
+    uploadImage: uploads.uploadStatus
 });
 
 // connect method from react-router connects the component with redux store

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postImageAction } from '../actions/mediaActions';
+import { postImageAction , uploadFinished } from '../actions/mediaActions';
 import { ProcessImage } from '../services/imageResize';
 import { IsUploadSupported } from '../services/helperFunctions';
 import { CalcPhi } from '../services/helperFunctions';
@@ -11,22 +11,19 @@ class ImageUploadPage extends Component {
         super(props);
         this.handleUploadImage = this.handleUploadImage.bind(this);
         this.commenceUpload = this.commenceUpload.bind(this);
-        this.cancelUpload = this.cancelUpload.bind(this);
+        this.vanishUploadModal = this.vanishUploadModal.bind(this);
         this.uploeadWidgetAppears = this.uploadWidgetAppears.bind(this);
         this.state = {topVal:-1222};
 
     }
 
-    componentWillReceiveProps(){
+    componentWillReceiveProps(nextProps){
         // Render different views for drag n drop, laptop, and mobile devices;
-        console.log(" will receive called "+this.props.uploadImage);
-        let timeout = setTimeout(() =>{
-            if(this.props.uploadImage === true){
-                this.uploadWidgetAppears();    
-            }
-        },100);
         
-
+        console.log(" old prop for upload status "+this.props.uploadImage+"  new prop for upload status  "+nextProps.uploadImage);
+        if(nextProps.uploadImage === true){
+            this.uploadWidgetAppears();
+        }
     }
 
     handleUploadImage(selectedImage) {
@@ -64,20 +61,38 @@ class ImageUploadPage extends Component {
             }
             reader.readAsDataURL(img);
         }
+        this.vanishUploadModal("_");
 
         readFile(imgU);
     }
 
-    cancelUpload(evt){
-        console.log(" evt target  "+evt.target.getAttribute('class'));
-        let classToTest = evt.target.getAttribute('class') || "burn-it-down";
-        evt.stopPropagation();
-        if(classToTest.indexOf('outer-upload') !== -1){
+    vanishUploadModal(evt){
+        //console.log(" evt target  "+evt.target.getAttribute('class'));
+        let vanishModal = () => {
+
             this.setState({topVal:-1222});
+            
+        }
+        let classToTest = null;
+
+        // an event target being undefined means this function was called
+        // from the image uploading process
+        if(typeof evt.target === 'undefined'){
+            vanishModal();
+            return true;
+        } else {
+            classToTest = evt.target.getAttribute('class') || "burn-it-down";
+            evt.stopPropagation();
+        }
+        
+        if(classToTest.indexOf('outer-upload') !== -1){
+            vanishModal();
+            this.props.dispatch(uploadFinished(false));
             return true;    
         } else {
             return false;
         }
+
         
     }
 
@@ -85,22 +100,21 @@ class ImageUploadPage extends Component {
     render(){
         // First, find out if upload is supported
         let uploadVerdict = IsUploadSupported();
-       
-
+        
         let imageHolder =   <div id="image-holder" className="img-holder">
                                 <input id="uploadfile" className="inputfile" name="uploadfile" ref={input => this.imageFile = input} type="file" accept="image/*" />
-                                <label htmlFor="uploadfile">Choose a file</label>
+                                <button 
+                                    type="submit"
+                                    className="k-btn upload-modal-btn"
+                                    onClick={this.commenceUpload}
+                                >Upload</button>
                             </div>
 
         return(
-            <div className="outer-upload-container" onClick={this.cancelUpload} style={{top:this.state.topVal}}>
+            <div className="outer-upload-container" onClick={this.vanishUploadModal} style={{top:this.state.topVal}}>
                 <div className="inner-upload-container">
                     {imageHolder}
-                    <button 
-                        type="submit"
-                        className="k-btn"
-                        onClick={this.commenceUpload}
-                    >Upload</button>
+                    
                 </div>
             </div>
         
@@ -109,5 +123,8 @@ class ImageUploadPage extends Component {
 
 
 }
+const mapStateToProps = ({uploads}) => ({
+    uploadImage:uploads.uploadStatus
+})
 
-export default connect(null, null)(ImageUploadPage);
+export default connect(mapStateToProps, null)(ImageUploadPage);

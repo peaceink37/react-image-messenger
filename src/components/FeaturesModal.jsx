@@ -81,10 +81,10 @@ class FeaturesModal extends Component {
                             <ModalTitle>Upcoming Features</ModalTitle>
                         </ModalHeader>
                             <ModalBody>
-                                <h6>Image Loading : <span>Mid March</span></h6>
-                                <h6>SSL and User Management : <span>Early April</span></h6>
-                                <h6>Camera Capture and Processing : <span>Mid April</span></h6>
-                               <h6>Theme and User-Centric Galleries : <span>Early May</span></h6>
+                                <h6>Image Loading : <span>Early April</span></h6>
+                                <h6>SSL and User Management : <span>Later in April</span></h6>
+                                <h6>Camera Capture and Processing : <span>Early May</span></h6>
+                               <h6>Theme and User-Centric Galleries : <span>Later in May</span></h6>
                           </ModalBody>
                        </Modal>
         } else {
