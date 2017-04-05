@@ -34,9 +34,7 @@ class MediaGalleryPage extends Component {
         
     }
 
-    //this.state = {imageUploading:false, uploadImage:false, uploadedImage:{}}
-
-
+    
     // Dispatches *searchMediaAction*  immediately after initial rendering.
     // Note that we are using the dispatch method from the store to execute this task, courtesy of react-redux
     // We are also looking at viewport size so we can adjust our responsive / adaptive hybrid
@@ -113,6 +111,8 @@ class MediaGalleryPage extends Component {
     }
 
     applyImageFilter(filterObj) {
+
+        console.log("  apply filter image  -- canvas ref "+filterObj.img);
         
         let imageFilter = ImageFilters(filterObj.img, filterObj.canvas);
         this.setImageFilterInstance(imageFilter);
@@ -142,8 +142,7 @@ class MediaGalleryPage extends Component {
         } else {
             this.setState({filtersIn:false});
         }
-        
-       
+          
     }
 
     toggleFeaturesModal(obj){
@@ -179,18 +178,18 @@ class MediaGalleryPage extends Component {
                     
                     <div>
                         <PhotoPage
-                        applyImageFilter={this.applyImageFilter}
-                        bubbleMachine={false}
-                        currentTheme={this.state.currentQueryValue}
-                        dataImage={this.state.dataImage}
-                        images={images}
-                        imageData={this.state.imageData}
-                        setTextValues = {this.setTextValues}
-                        selectedImage={selectedImage}
-                        toggleFeaturesModal={this.toggleFeaturesModal}
-                        winWidth={this.state.winWidth}
-                        onHandleSelectImage={this.handleSelectImage}
-                        filtersIn={this.state.filtersIn}
+                            applyImageFilter={this.applyImageFilter}
+                            bubbleMachine={false}
+                            currentTheme={this.state.currentQueryValue}
+                            dataImage={this.state.dataImage}
+                            images={images}
+                            imageData={this.state.imageData}
+                            setTextValues = {this.setTextValues}
+                            selectedImage={selectedImage}
+                            toggleFeaturesModal={this.toggleFeaturesModal}
+                            winWidth={this.state.winWidth}
+                            onHandleSelectImage={this.handleSelectImage}
+                            filtersIn={this.state.filtersIn}
                         />
                         
                     </div>

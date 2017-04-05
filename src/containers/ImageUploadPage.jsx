@@ -19,8 +19,7 @@ class ImageUploadPage extends Component {
 
     componentWillReceiveProps(nextProps){
         // Render different views for drag n drop, laptop, and mobile devices;
-        
-        console.log(" old prop for upload status "+this.props.uploadImage+"  new prop for upload status  "+nextProps.uploadImage);
+                
         if(nextProps.uploadImage === true){
             this.uploadWidgetAppears();
         }

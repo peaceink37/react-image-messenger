@@ -3,6 +3,7 @@
 import React, { PropTypes, Component } from 'react';
 import ImageFilter from './ImageFilter';
 import GradientImageFilter from './GradientFilter';
+import MainImageWrapper from './MainImageWrapper';
 import ThumbsContainer from './ThumbsContainer';
 import BubbleMachine from './BubblesMachine';
 import TextEntryBox from './TextEntryBox';
@@ -21,17 +22,28 @@ class ImagePage extends Component {
         this.attachCanvasToSettings = this.attachCanvasToSettings.bind(this);
         this.getTextBoxes = this.getTextBoxes.bind(this);
         this.counter = 0;
-        this.textObject = {type:"TEXT", value:[{},{}]}
+        this.canvasRef = null;
+        this.selectedImageRef = null;
+        this.setRefsCallback = this.setRefsCallback.bind(this);
+        this.textObject = {type:"TEXT", value:[{},{}]};
         this.state = {textMode:false, 
             gradientSettings:[{rChan:0,gChan:0,bChan:0,aChan:0.2,stop:0.2},
             {rChan:0,gChan:0,bChan:0,aChan:0.3,stop:0.4},{rChan:0,gChan:0,bChan:0,aChan:0.5,stop:0.7},
             {rChan:0,gChan:0,bChan:0,aChan:0.68,stop:0.8},{rChan:0,gChan:0,bChan:0,aChan:0.8,stop:1.0}]};
     }
 
+
+    setRefsCallback(canvasRef, selectedImageRef){
+       
+        this.canvasRef = canvasRef;
+        this.selectedImageRef = selectedImageRef;
+    }
+
     attachCanvasToSettings(obj, colorSetting){
 
-        obj.canvas = this.refs.canvas;
-        obj.img = this.refs.selectedimage;
+        console.log("  in attach canvas "+this.canvasRef+"  sel img ref  "+this.selectedImageRef);
+        obj.canvas = this.canvasRef;
+        obj.img = this.selectedImageRef;
         obj.redraw = false;
         obj.clear = false;
 
@@ -167,23 +179,14 @@ class ImagePage extends Component {
             <div className="col-sm-12 middle-content-container">
                 {currentTheme}
                 <div className="image-filter-container">
-                    <div className="col-sm-8 col-xs-12">
-                        <div className="selected-image">
-                            <div id={"ff"+this.props.selectedImage.id}>
-                                <h6>{this.props.selectedImage.title}</h6>
-                                <div className="outer-image-wrapper">
-                                    {textModeBtn}
-                                    <div className="image-wrapper">
-                                        {textBox}
-                                        {dataImage}
-                                        <canvas ref="canvas" id="image-filter" width={hwVal.width} height={hwVal.height}></canvas>
-                                        <img ref="selectedimage" src={this.props.selectedImage.mediaUrl} 
-                                        width={hwVal.width} height={hwVal.height} alt={this.props.selectedImage.title} crossOrigin="anonymous"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <MainImageWrapper
+                        selectedImage={this.props.selectedImage}
+                        dataImage={dataImage}
+                        hwVal={hwVal}
+                        textBox={textBox}
+                        textModeBtn={textModeBtn}
+                        setRefsCallback={this.setRefsCallback} 
+                    />
                     <div className={filterCollectionClasses}>
                         <ImageFilter 
                             id="k-contrastf" 
