@@ -14,12 +14,6 @@ class MainImageWrapper extends Component {
         let canvasRef = this.canvas;
         let selectedImageRef = this.selectedImage;
         this.props.setRefsCallback(canvasRef, selectedImageRef);
-
-
-        // Drills
-        
-        var animals = /(pig|cow|chicken)+s?/g
-        console.log(animals.exec("12 pigs pigs cow cow chicken pig cow"))
         
     }
 
