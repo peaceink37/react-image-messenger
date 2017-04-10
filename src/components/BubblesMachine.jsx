@@ -1,17 +1,13 @@
 // ./src/components/BubblesMachine.jsx
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component } from 'react';
 //import { findDOMNode } from "react-dom";
 import BubbleBuilder from '../services/bubbleBuilder';
 
 
 class BubblesMachine extends Component {
 
-    constructor(props){
-        super(props);
-            
-    }
-
+  
     componentDidMount(){
 
         let canvas = this.canvas;

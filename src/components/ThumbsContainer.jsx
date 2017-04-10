@@ -7,10 +7,6 @@ import ImageSlider from 'react-slick';
 class ThumbsContainer extends Component {
 
 
-    constructor(props){
-        super(props);
-    }
-
     render(){
 
         const settings = {

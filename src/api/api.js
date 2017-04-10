@@ -43,8 +43,9 @@ export const postKImage = (imageObject) => {
     let host = getLocation();
     const KIMAGE_ENDPOINT = `http://`+host+`/api/upload/imageobj/?title=${imageObject.title}&uid="kelly123`;
 
-    var payload = new FormData();
+    let payload = new FormData();
         payload.append('uid', imageObject.uid || "fuzzy"+Math.round(Math.random()*10000));
+        payload.append('title', imageObject.title);
         payload.append('imgbase64', imageObject.data);
 
     return fetch(KIMAGE_ENDPOINT, {
@@ -58,5 +59,18 @@ export const postKImage = (imageObject) => {
         return response.json();
     })
 }
+
+
+// GoodReads section
+// GoodReads Api key: U7zCSEn7iQiIoTXSyy3jfQ secret: aiffmGnCISio0diL8412ZWVUx3cY1FD5Gr68H5hZTP0
+
+// Weather Underground
+// URL: https://www.wunderground.com/weather/api/
+
+
+// Rijksmuseum API Key: qjZvw3wI
+// Url for Rijksmuseum collection https://www.rijksmuseum.nl/api/nl/collection/sk-c-5?key=qjZvw3wI&format=json
+
+
 
 

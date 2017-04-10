@@ -54,7 +54,6 @@ class ImagePage extends Component {
             }
             obj.value.gradientSettings = this.state.gradientSettings;
         } else if (obj.type === "TEXT"){
-            console.log(" now we're getting somewhere "+obj.value[0].value);
             this.props.setTextValues(obj);
             return true;
         }
@@ -152,7 +151,8 @@ class ImagePage extends Component {
 
          let dataImage = null;
             if(this.props.dataImage === true){
-                dataImage = <img ref="dataimage" className="data-image" src={this.props.imageData} width={hwVal.width} height={hwVal.height} />
+                dataImage = <img ref="dataimage" className="data-image" src={this.props.imageData} 
+                            width={hwVal.width} height={hwVal.height} alt="Downloadable Result of Transformed Canvas" />
             }
 
         let textModeBtn = <button 
@@ -192,17 +192,23 @@ class ImagePage extends Component {
                             id="k-contrastf" 
                             filterlabel="CONTRAST"
                             applyFilter={this.attachCanvasToSettings}
+                            startingY={53}
+                            borderBuffer={[14,3]}
                             />
                         <ImageFilter 
                             id="k-brightnessf" 
                             filterlabel="BRIGHTNESS"
                             applyFilter={this.attachCanvasToSettings}
+                            startingY={53}
+                            borderBuffer={[14,3]}
                             />
                         <GradientImageFilter
                             id="k-gradient"
                             filterlabel="GRADIENT"
                             gradientSettings={this.state.gradientSettings}
                             applyFilter={this.attachCanvasToSettings}
+                            startingY={3}
+                            borderBuffer={[14,3]}
                             />
                     </div>
                 </div>

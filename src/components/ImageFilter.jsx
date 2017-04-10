@@ -8,46 +8,50 @@ class ImageFilter extends Component{
 
         constructor(props){
             super(props);
-            this.setFilterValue = this.setFilterValue.bind(this);
             this.filterTouched = this.filterTouched.bind(this);
-            this.state = {mouseDown:false, xPos:0, yPos:53, yPosAdj:53};
+            this.state = {mouseDown:false, xPos:0, yPos:this.props.startingY, yPosAdj:this.props.startingY};
+        
         }
 
+        componentWillMount(){
 
-        setFilterValue(value){
-
+            this.targetHeight = null;
+            this.topBoundary = null;
 
         }
+
 
         filterTouched(event){
 
-            //setInterval(function(){
+            event.stopPropagation();
+            let target = event.target;
 
+            // we only want to run these measuring methods once
+            if(this.targetHeight === null){
+                this.topBoundary = parseInt(target.getBoundingClientRect().top);
+                this.targetHeight = parseInt(target.getBoundingClientRect().bottom) - this.topBoundary;
+            }
 
-                let target = event.target;
-                let yPos = parseInt(event.clientY) - parseInt(target.getBoundingClientRect().top);
-                let filterSetting = ((yPos/120*(-100))+100).toFixed(0);
+            let maxTop = this.targetHeight - this.props.borderBuffer[0];
+            let minBottom = this.props.borderBuffer[1];
             
-                let adjYPos = yPos;
-                let calcYPos = (adjYPos) => {
+            let yPos = parseInt(event.clientY) - this.topBoundary;
            
-                if (adjYPos > 106){
-                    adjYPos = 106;
-                } else if (adjYPos < 3){
-                    adjYPos = 3;
+            let calcYPos = (yPos) => {
+       
+                let adjYPos = yPos;
+
+                if (adjYPos > maxTop){
+                    adjYPos = maxTop;
+                } else if (adjYPos < minBottom){
+                    adjYPos = minBottom;
                 }
                 
                 return adjYPos;
             }
             
-            this.setState({yPos:yPos, yPosAdj:calcYPos(adjYPos)});
+            this.setState({yPos:yPos, yPosAdj:calcYPos(yPos)});
             this.props.applyFilter({type:this.props.filterlabel, value:yPos});
-
-
-
-
-            //},66)
-
             
         }
 
@@ -62,6 +66,7 @@ class ImageFilter extends Component{
                     <FilterSlider 
                         touchEvent={this.filterTouched} 
                         ypos={this.state.yPosAdj}
+                        id={this.props.id}
                     />
                 </div>
 

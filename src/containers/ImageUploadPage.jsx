@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { postImageAction , uploadFinished } from '../actions/mediaActions';
 import { ProcessImage } from '../services/imageResize';
 import { IsUploadSupported } from '../services/helperFunctions';
-import { CalcPhi } from '../services/helperFunctions';
 
 class ImageUploadPage extends Component {
 
@@ -37,12 +36,13 @@ class ImageUploadPage extends Component {
     commenceUpload(){
         
         let imgU = this.imageFile.files[0];
+
         let imgData = null;
         let imgType = null;
 
         let pushFile = (processedImg) => {
             
-            this.handleUploadImage({data:processedImg, type:imgType, title:"get some pictures man"});
+            this.handleUploadImage({data:processedImg, type:imgType, title:this.imageTitle});
         };
 
         let readFile = (img) => {
@@ -101,11 +101,15 @@ class ImageUploadPage extends Component {
         let uploadVerdict = IsUploadSupported();
         
         let imageHolder =   <div id="image-holder" className="img-holder">
-                                <input id="uploadfile" className="inputfile" name="uploadfile" ref={input => this.imageFile = input} type="file" accept="image/*" />
-                                <button 
-                                    type="submit"
-                                    className="k-btn upload-modal-btn"
-                                    onClick={this.commenceUpload}
+                                   <input id="uploadfile" className="inputfile" name="uploadfile" ref={input => this.imageFile = input} type="file" accept="image/*" />
+                                   <label>
+                                    Title:
+                                    </label>
+                                    <input id="imagetitle" className="imagetitle" ref={input => {this.imageTitle = input}} type="text" pattern="(?=.*([\w]).*)[ \w]*" />
+                                    <button 
+                                        type="submit"
+                                        className="k-btn upload-modal-btn"
+                                        onClick={this.commenceUpload}
                                 >Upload</button>
                             </div>
 

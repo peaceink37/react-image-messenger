@@ -1,6 +1,6 @@
 // ./containers/MediaGalleryPage.jsx
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Header from '../common/Header';
 import ImageFilters from '../services/imageFilters';
@@ -60,14 +60,16 @@ class MediaGalleryPage extends Component {
         console.log(" handle select image "+selectedImage);
 
         for(let filterType in FilterStore){
+            if(FilterStore.hasOwnProperty(filterType)){
             console.log(" filter type "+filterType)
-            if(FilterStore[filterType].empty === false){
-                this.filterObj[filterType] = {};
-                FilterStore[filterType].empty = true;
-                let currentImgFilter = this.getImageFilterInstance();
-                currentImgFilter.clear();
-                this.setState({dataImage:false, imageData:null});
-                return;    
+                if(FilterStore[filterType].empty === false){
+                    this.filterObj[filterType] = {};
+                    FilterStore[filterType].empty = true;
+                    let currentImgFilter = this.getImageFilterInstance();
+                    currentImgFilter.clear();
+                    this.setState({dataImage:false, imageData:null});
+                    return;    
+                }
             }
         } 
     }
@@ -147,17 +149,12 @@ class MediaGalleryPage extends Component {
 
     toggleFeaturesModal(obj){
 
-        //this.state.modalOpen === false ? true : false;
-        console.log(" toggle features modal  "+obj.modalOpen);
-        
         this.setState({modalOpen:obj.modalOpen, modalType:obj.from});
 
     }
 
     render() {
-        const { images, selectedImage, fModalOpen } = this.props;
-
-            console.log(" selected image "+selectedImage);
+        const { images, selectedImage } = this.props;
         
             return (
                 <div>
@@ -184,7 +181,7 @@ class MediaGalleryPage extends Component {
                             dataImage={this.state.dataImage}
                             images={images}
                             imageData={this.state.imageData}
-                            setTextValues = {this.setTextValues}
+                            setTextValues={this.setTextValues}
                             selectedImage={selectedImage}
                             toggleFeaturesModal={this.toggleFeaturesModal}
                             winWidth={this.state.winWidth}
@@ -202,8 +199,15 @@ class MediaGalleryPage extends Component {
 }
 
 // Define PropTypes
-MediaGalleryPage.propTypes={
-// Define your PropTypes here
+MediaGalleryPage.PropTypes={
+    uploads:PropTypes.object.isRequired,
+    images:PropTypes.array.isRequired,
+    selectedImage:PropTypes.object.isRequired,
+    handleSelectImage:PropTypes.func.isRequired,
+    applyImageFilter:PropTypes.func.isRequired,
+    handleSearch:PropTypes.func.isRequired,
+    filtersAppear:PropTypes.func.isRequired,
+    toggleFeaturesModal:PropTypes.func.isRequired
 };
 
  // Subscribe component to redux store and merge the state into 

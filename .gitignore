@@ -5,6 +5,11 @@ node_modules
 
 # testing
 coverage
+__snapshots__
+
+#exp
+ArtHouse
+ArtHouse.jsx
 
 # production
 build

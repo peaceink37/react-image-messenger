@@ -96,7 +96,7 @@ class Header extends Component {
         return(
             <div id="k-header" className="text-center">
                 <nav className="navbar navbar-default">
-                    <img className="logo" src="./images/kbyte-logo-small.png" />
+                    <img className="logo" src="./images/kbyte-logo-small.png" alt="KbyteDesign Logo" />
                         {uploadBtn}
                         {searchField}
                         {filtersBtn}
@@ -108,5 +108,13 @@ class Header extends Component {
     }
     
 };
+
+Header.PropTypes={
+    updateInputValue:PropTypes.func.isRequired,
+    getUploadBtn:PropTypes.node,
+    getFiltersBtn:PropTypes.node
+}
+
+
 
 export default Header;
