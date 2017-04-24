@@ -45,7 +45,7 @@ export const CalcAdjYPos = (max, min) => {
 
         let maxTop = max;
         let minBottom = min;
-        
+
         return (yPos) => {
 
             let adjYPos = yPos;
@@ -55,7 +55,7 @@ export const CalcAdjYPos = (max, min) => {
             } else if (adjYPos < minBottom){
                 adjYPos = minBottom;
             }
-            
+            console.log(" adj ypos from Calc in helpers "+adjYPos+" min max "+maxTop+"  "+minBottom);
             return adjYPos;
         }
     }

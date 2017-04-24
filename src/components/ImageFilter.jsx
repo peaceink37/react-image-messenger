@@ -11,17 +11,6 @@ class ImageFilter extends Component{
             super(props);
             this.filterTouched = this.filterTouched.bind(this);
             this.state = {mouseDown:false, xPos:0, yPos:this.props.startingY, yPosAdj:this.props.startingY};
-            this.maxTop = null;
-            this.minBottom = null;
-            this.calcYPos = null;
-        
-        }
-
-        componentWillMount(){
-
-            this.targetHeight = null;
-            this.topBoundary = null;
-
         }
 
 
@@ -30,18 +19,16 @@ class ImageFilter extends Component{
             event.stopPropagation();
             let target = event.target;
 
-            // we only want to run these measuring methods once
-            if(this.targetHeight === null){
-                this.topBoundary = parseInt(target.getBoundingClientRect().top);
-                this.targetHeight = parseInt(target.getBoundingClientRect().bottom) - this.topBoundary;
-                this.maxTop = this.targetHeight - this.props.borderBuffer[0];
-                this.minBottom = this.props.borderBuffer[1];
-                this.calcYPos = CalcAdjYPos(this.maxTop, this.minBottom);
-            }
+            let topBoundary = parseInt(target.getBoundingClientRect().top);
+            let targetHeight = parseInt(target.getBoundingClientRect().bottom) - topBoundary;
            
-            let yPos = parseInt(event.clientY) - this.topBoundary;
-                       
-            this.setState({yPos:yPos, yPosAdj:this.calcYPos(yPos)});
+            let maxTop = targetHeight - this.props.borderBuffer[0];
+            let minBottom = this.props.borderBuffer[1];
+            let calcYPos = CalcAdjYPos(maxTop, minBottom);
+            let yPos = parseInt(event.clientY) - topBoundary;
+            let adjYPos = calcYPos(yPos);
+            console.log(" ypos "+yPos+" client y "+parseInt(event.clientY)+" top boundary "+topBoundary);
+            this.setState({yPos:yPos, yPosAdj:adjYPos});
             this.props.applyFilter({type:this.props.filterlabel, value:yPos});
             
         }

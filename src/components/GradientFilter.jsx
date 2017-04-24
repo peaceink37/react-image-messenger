@@ -11,16 +11,6 @@ class GradientFilter extends Component{
             super(props);
             this.filterTouched = this.filterTouched.bind(this);
             this.state = {yPositions:{rYPos:106, gYPos:106, bYPos:106}};
-            this.maxTop = null;
-            this.minBottom = null;
-            this.calcYPos = null;
-          
-        }
-
-        componentWillMount(){
-
-            this.targetHeight = null;
-            this.topBoundary = null;
         }
 
         filterTouched(event){
@@ -29,42 +19,42 @@ class GradientFilter extends Component{
             //event.stopPropagation();
             let target = event.target;
 
-            // we only want to run these measuring methods once
-            if(this.targetHeight === null){
-                this.topBoundary = parseInt(target.getBoundingClientRect().top);
-                this.targetHeight = parseInt(target.getBoundingClientRect().bottom) - this.topBoundary;
-                this.maxTop = this.targetHeight - this.props.borderBuffer[0];
-                this.minBottom = this.props.borderBuffer[1];
-                this.calcYPos = CalcAdjYPos(this.maxTop, this.minBottom);
-            }
+            let topBoundary = parseInt(target.getBoundingClientRect().top);
+            let targetHeight = parseInt(target.getBoundingClientRect().bottom) - topBoundary;
+            
 
+            let maxTop = targetHeight - this.props.borderBuffer[0];
+            let minBottom = this.props.borderBuffer[1];
+            let calcYPos = CalcAdjYPos(maxTop, minBottom);
             
             
-            let yPos = parseInt(event.clientY) - this.topBoundary;
+            let yPos = parseInt(event.clientY) - topBoundary;
 
-            let rangy = RangeMap(this.calcYPos(yPos));
-            console.log(" rangy "+this.calcYPos(yPos));
+            let adjYPos = calcYPos(yPos);
+            let rangy = RangeMap(adjYPos);
+            
             let num = Math.round(rangy(3, 111, 255, 0));
+
+            console.log(" range num "+num+" yPos from clientY "+yPos);
 
             let oldSetting = this.props.gradientSettings;
             let yPositions = this.state.yPositions;
-            console.log(" old setting "+oldSetting);
             let newSetting = oldSetting.map((obj) => {
 
-                console.log(" old setting map "+obj+" target id  "+target.id);
+                //console.log(" old setting map "+obj+" target id  "+target.id);
                 switch(target.id){
                 case "rchannel":
                     obj.rChan = num;
-                    yPositions.rYPos = this.calcYPos(yPos);
-                    console.log(" r channel adjust "+yPositions.rYPos);
+                    yPositions.rYPos = adjYPos;
+                    //console.log(" r channel adjust "+yPositions.rYPos);
                     return obj;
                 case "gchannel":
                     obj.gChan = num;
-                    yPositions.gYPos = this.calcYPos(yPos);
+                    yPositions.gYPos = adjYPos;
                     return obj;
                 case "bchannel":
                     obj.bChan = num;
-                    yPositions.bYPos = this.calcYPos(yPos);
+                    yPositions.bYPos = adjYPos;
                     return obj;
                 default:
                     return obj;
