@@ -2,6 +2,7 @@
 
 import React, {PropTypes, Component} from 'react';
 import FilterSlider from './FilterSlider';
+import { CalcAdjYPos } from '../services/helperFunctions';
 
 class ImageFilter extends Component{
 
@@ -10,6 +11,9 @@ class ImageFilter extends Component{
             super(props);
             this.filterTouched = this.filterTouched.bind(this);
             this.state = {mouseDown:false, xPos:0, yPos:this.props.startingY, yPosAdj:this.props.startingY};
+            this.maxTop = null;
+            this.minBottom = null;
+            this.calcYPos = null;
         
         }
 
@@ -30,27 +34,14 @@ class ImageFilter extends Component{
             if(this.targetHeight === null){
                 this.topBoundary = parseInt(target.getBoundingClientRect().top);
                 this.targetHeight = parseInt(target.getBoundingClientRect().bottom) - this.topBoundary;
+                this.maxTop = this.targetHeight - this.props.borderBuffer[0];
+                this.minBottom = this.props.borderBuffer[1];
+                this.calcYPos = CalcAdjYPos(this.maxTop, this.minBottom);
             }
-
-            let maxTop = this.targetHeight - this.props.borderBuffer[0];
-            let minBottom = this.props.borderBuffer[1];
-            
-            let yPos = parseInt(event.clientY) - this.topBoundary;
            
-            let calcYPos = (yPos) => {
-       
-                let adjYPos = yPos;
-
-                if (adjYPos > maxTop){
-                    adjYPos = maxTop;
-                } else if (adjYPos < minBottom){
-                    adjYPos = minBottom;
-                }
-                
-                return adjYPos;
-            }
-            
-            this.setState({yPos:yPos, yPosAdj:calcYPos(yPos)});
+            let yPos = parseInt(event.clientY) - this.topBoundary;
+                       
+            this.setState({yPos:yPos, yPosAdj:this.calcYPos(yPos)});
             this.props.applyFilter({type:this.props.filterlabel, value:yPos});
             
         }

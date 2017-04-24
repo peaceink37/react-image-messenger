@@ -176,7 +176,7 @@ class MediaGalleryPage extends Component {
                     <div>
                         <PhotoPage
                             applyImageFilter={this.applyImageFilter}
-                            bubbleMachine={false}
+                            bubbleMachine={true}
                             currentTheme={this.state.currentQueryValue}
                             dataImage={this.state.dataImage}
                             images={images}

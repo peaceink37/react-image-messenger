@@ -41,5 +41,24 @@ export const CalcPhi = (table) => {
     return dividend / divisor;
 }
 
+export const CalcAdjYPos = (max, min) => {
+
+        let maxTop = max;
+        let minBottom = min;
+        
+        return (yPos) => {
+
+            let adjYPos = yPos;
+       
+            if (adjYPos > maxTop){
+                adjYPos = maxTop;
+            } else if (adjYPos < minBottom){
+                adjYPos = minBottom;
+            }
+            
+            return adjYPos;
+        }
+    }
+
 
 

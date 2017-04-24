@@ -6,8 +6,7 @@ import 'font-awesome-sass-loader';
 import ImageUploadPage from './ImageUploadPage';
 import MediaGalleryPage from './MediaGalleryPage';
 //import ArtHouse from './ArtHouse';
-// The parent component renders the Header component and component(s) in the
-// route the user navigates to.
+//Main containers go here
 
 class App extends Component {
 

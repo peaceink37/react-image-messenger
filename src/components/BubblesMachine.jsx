@@ -1,7 +1,6 @@
 // ./src/components/BubblesMachine.jsx
 
 import React, {Component } from 'react';
-//import { findDOMNode } from "react-dom";
 import BubbleBuilder from '../services/bubbleBuilder';
 
 
@@ -14,18 +13,21 @@ class BubblesMachine extends Component {
         let bubbles = BubbleBuilder();
         console.log(" canvas view "+canvas);
         let ctx = canvas.getContext("2d");
+
+        let makeBubbles = () =>{
+            bubbles.Draw(ctx,canvas);
+            window.requestAnimationFrame(makeBubbles);
+        }
         
-        
-        setInterval(
-            function(){bubbles.Draw(ctx,canvas)}, 44);
-        bubbles.Draw(ctx,canvas);
+        window.requestAnimationFrame(makeBubbles);
+         
 
     }
 
  
     render(){
-
-         return (
+        
+        return (
             <div className="bubblemachine">
                 <canvas ref={canvas => this.canvas = canvas} width="500" height="500"></canvas>
             </div>

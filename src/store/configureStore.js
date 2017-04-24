@@ -3,7 +3,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware, { END } from 'redux-saga';
 import rootReducer from '../reducers';
-import rootSaga from '../sagas'; // TODO: Next step
+import rootSaga from '../sagas';
 
 // Dispatch logging utility
 const logger = store => next => action => {

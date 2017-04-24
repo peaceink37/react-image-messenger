@@ -2,7 +2,7 @@
 
 import React, {PropTypes, Component} from 'react';
 import FilterSlider from './FilterSlider';
-import { RangeMap } from '../services/helperFunctions';
+import { RangeMap , CalcAdjYPos } from '../services/helperFunctions';
 
 class GradientFilter extends Component{
 
@@ -11,7 +11,10 @@ class GradientFilter extends Component{
             super(props);
             this.filterTouched = this.filterTouched.bind(this);
             this.state = {yPositions:{rYPos:106, gYPos:106, bYPos:106}};
-            
+            this.maxTop = null;
+            this.minBottom = null;
+            this.calcYPos = null;
+          
         }
 
         componentWillMount(){
@@ -30,28 +33,17 @@ class GradientFilter extends Component{
             if(this.targetHeight === null){
                 this.topBoundary = parseInt(target.getBoundingClientRect().top);
                 this.targetHeight = parseInt(target.getBoundingClientRect().bottom) - this.topBoundary;
+                this.maxTop = this.targetHeight - this.props.borderBuffer[0];
+                this.minBottom = this.props.borderBuffer[1];
+                this.calcYPos = CalcAdjYPos(this.maxTop, this.minBottom);
             }
 
-            let maxTop = this.targetHeight - this.props.borderBuffer[0];
-            let minBottom = this.props.borderBuffer[1];
+            
             
             let yPos = parseInt(event.clientY) - this.topBoundary;
 
-            let calcYPos = (yPos) => {
-
-                let adjYPos = yPos;
-           
-                if (adjYPos > maxTop){
-                    adjYPos = maxTop;
-                } else if (adjYPos < minBottom){
-                    adjYPos = minBottom;
-                }
-                
-                return adjYPos;
-            }
-
-            let rangy = RangeMap(calcYPos(yPos));
-            console.log(" rangy "+calcYPos(yPos));
+            let rangy = RangeMap(this.calcYPos(yPos));
+            console.log(" rangy "+this.calcYPos(yPos));
             let num = Math.round(rangy(3, 111, 255, 0));
 
             let oldSetting = this.props.gradientSettings;
@@ -63,16 +55,16 @@ class GradientFilter extends Component{
                 switch(target.id){
                 case "rchannel":
                     obj.rChan = num;
-                    yPositions.rYPos = calcYPos(yPos);
+                    yPositions.rYPos = this.calcYPos(yPos);
                     console.log(" r channel adjust "+yPositions.rYPos);
                     return obj;
                 case "gchannel":
                     obj.gChan = num;
-                    yPositions.gYPos = calcYPos(yPos);
+                    yPositions.gYPos = this.calcYPos(yPos);
                     return obj;
                 case "bchannel":
                     obj.bChan = num;
-                    yPositions.bYPos = calcYPos(yPos);
+                    yPositions.bYPos = this.calcYPos(yPos);
                     return obj;
                 default:
                     return obj;

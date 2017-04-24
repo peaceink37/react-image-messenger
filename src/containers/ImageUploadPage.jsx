@@ -17,8 +17,7 @@ class ImageUploadPage extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        // Render different views for drag n drop, laptop, and mobile devices;
-                
+        // If true, the upload widget will render
         if(nextProps.uploadImage === true){
             this.uploadWidgetAppears();
         }
@@ -33,17 +32,12 @@ class ImageUploadPage extends Component {
         this.setState({topVal:0});
 
     }
-    commenceUpload(){
-        
-        let imgU = this.imageFile.files[0];
 
+    commenceUpload(){
+        // use ref callback to grag image file data
+        let imgU = this.imageFile.files[0];
         let imgData = null;
         let imgType = null;
-
-        let pushFile = (processedImg) => {
-            
-            this.handleUploadImage({data:processedImg, type:imgType, title:this.imageTitle});
-        };
 
         let readFile = (img) => {
 
@@ -60,7 +54,13 @@ class ImageUploadPage extends Component {
             }
             reader.readAsDataURL(img);
         }
-        this.vanishUploadModal("_");
+        // callback from the ProcessImage module
+        // check for errors        
+        let pushFile = (processedImg) => {
+            
+            this.handleUploadImage({data:processedImg, type:imgType, title:this.imageTitle});
+            this.vanishUploadModal("_");
+        };
 
         readFile(imgU);
     }
@@ -68,10 +68,9 @@ class ImageUploadPage extends Component {
     vanishUploadModal(evt){
         //console.log(" evt target  "+evt.target.getAttribute('class'));
         let vanishModal = () => {
-
             this.setState({topVal:-1222});
-            
         }
+
         let classToTest = null;
 
         // an event target being undefined means this function was called
@@ -99,19 +98,24 @@ class ImageUploadPage extends Component {
     render(){
         // First, find out if upload is supported
         let uploadVerdict = IsUploadSupported();
-        
-        let imageHolder =   <div id="image-holder" className="img-holder">
-                                   <input id="uploadfile" className="inputfile" name="uploadfile" ref={input => this.imageFile = input} type="file" accept="image/*" />
-                                   <label>
-                                    Title:
-                                    </label>
-                                    <input id="imagetitle" className="imagetitle" ref={input => {this.imageTitle = input}} type="text" pattern="(?=.*([\w]).*)[ \w]*" />
-                                    <button 
-                                        type="submit"
-                                        className="k-btn upload-modal-btn"
-                                        onClick={this.commenceUpload}
-                                >Upload</button>
+        let imageHolder = null;
+
+        if(uploadVerdict === true){
+            imageHolder =   <div id="image-holder" className="img-holder">
+                                <input id="uploadfile" className="inputfile" name="uploadfile" ref={input => this.imageFile = input} type="file" accept="image/*" />
+                                <label>
+                                Title:
+                                </label>
+                                <input id="imagetitle" className="imagetitle" ref={input => {this.imageTitle = input}} type="text" pattern="(?=.*([\w]).*)[ \w]*" />
+                                <button 
+                                    type="submit"
+                                    className="k-btn upload-modal-btn"
+                                    onClick={this.commenceUpload}
+                            >Upload</button>
                             </div>
+        } else {
+            imageHolder = "Sorry. Image Uploading Is Not Supported On This Device";
+        }
 
         return(
             <div className="outer-upload-container" onClick={this.vanishUploadModal} style={{top:this.state.topVal}}>

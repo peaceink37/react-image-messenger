@@ -4,8 +4,8 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import ImageFilter from './ImageFilter';
-import FilterSlider from './FilterSlider';
+import ImageFilter from '../ImageFilter';
+import FilterSlider from '../FilterSlider';
 
 test(' Click / Touch event fires each time user clicks on filter', () => {
 
@@ -27,15 +27,9 @@ test(' Click / Touch event fires each time user clicks on filter', () => {
 
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-
-    tree.props.onMouseDown();
-
-    tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-
 })
 
-test(' CalcYPos should return y position of filter knob ', () => {
+test(' CalcYPos should upper and lower limits on filter knob ', () => {
 
     let yPos = null;
     let maxTop = 100;
@@ -71,6 +65,13 @@ test(' Regex variations', () => {
     // The ? makes a pattern optional (zero or one matches )
     console.log(/butth[ea]?d/.test("butthd"));
     console.log(/butth[ea]?d/.test("butthead"));
+
+    function troop(){
+
+        console.log("  args  ",Array.prototype.join.call(arguments," "));
+    }
+    let foor = ["goo","doo","woo","foo"];
+    troop(foor);
 
 })
 
